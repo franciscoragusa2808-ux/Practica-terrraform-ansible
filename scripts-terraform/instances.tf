@@ -1,5 +1,5 @@
 resource "aws_instance" "frontend1" {
-  ami           = var.ami_debian
+  ami           = var.ami_ubuntu
   instance_type = var.instance_type
   key_name      = var.key_name
 
@@ -13,7 +13,7 @@ resource "aws_instance" "frontend1" {
 }
 
 resource "aws_instance" "frontend2" {
-  ami           = var.ami_debian
+  ami           = var.ami_ubuntu
   instance_type = var.instance_type
   key_name      = var.key_name
 
@@ -27,7 +27,7 @@ resource "aws_instance" "frontend2" {
 }
 
 resource "aws_instance" "backend" {
-  ami           = var.ami_debian
+  ami           = var.ami_ubuntu
   instance_type = var.instance_type
   key_name      = var.key_name
 
@@ -37,6 +37,20 @@ resource "aws_instance" "backend" {
 
   tags = {
     Name = "backend"
+  }
+}
+
+resource "aws_instance" "nfs" {
+  ami           = var.ami_ubuntu
+  instance_type = var.instance_type
+  key_name      = var.key_name
+
+  security_groups = [
+    aws_security_group.nfs.name
+  ]
+
+  tags = {
+    Name = "nfs"
   }
 }
 
@@ -51,19 +65,5 @@ resource "aws_instance" "balancer" {
 
   tags = {
     Name = "balancer"
-  }
-}
-
-resource "aws_instance" "nfs" {
-  ami           = var.ami_debian
-  instance_type = var.instance_type
-  key_name      = var.key_name
-
-  security_groups = [
-    aws_security_group.nfs.name
-  ]
-
-  tags = {
-    Name = "nfs"
   }
 }
